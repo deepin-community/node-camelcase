@@ -1,0 +1,26 @@
+Source: node-camelcase
+Maintainer: Debian Javascript Maintainers <pkg-javascript-devel@lists.alioth.debian.org>
+Uploaders: Jonathan Ulrich Horn <debian@autoit4you.de>,
+           Sruthi Chandran <srud@disroot.org>
+Section: javascript
+Testsuite: autopkgtest-pkg-nodejs
+Priority: optional
+Build-Depends: debhelper-compat (= 13),
+ dh-sequence-nodejs,
+ node-tape <!nocheck>
+Standards-Version: 4.5.1
+Homepage: https://github.com/sindresorhus/camelcase
+Vcs-Git: https://salsa.debian.org/js-team/node-camelcase.git
+Vcs-Browser: https://salsa.debian.org/js-team/node-camelcase
+Rules-Requires-Root: no
+
+Package: node-camelcase
+Architecture: all
+Depends: ${misc:Depends},
+  nodejs
+Multi-Arch: foreign
+Description: Convert a string to camelCase
+ Convert a dash, dot, underscore or space separated string to camelCase.
+ I.e. foo-bar -> fooBar.
+ .
+ Node.js is an event-based server-side JavaScript engine.

@@ -1,0 +1,66 @@
+node-camelcase (6.2.0-2) unstable; urgency=medium
+
+  * Team upload
+  * Back to unstable
+  * Bump debhelper compatibility level to 13
+  * Modernize debian/watch
+  * Use dh-sequence-nodejs
+
+ -- Xavier Guimard <yadd@debian.org>  Sun, 20 Dec 2020 08:53:01 +0100
+
+node-camelcase (6.2.0-1) experimental; urgency=medium
+
+  * Team upload
+
+  [ Debian Janitor ]
+  * Remove obsolete field Name from debian/upstream/metadata (already
+    present in machine-readable debian/copyright).
+  * Update standards version to 4.5.0, no changes needed.
+  * Apply multi-arch hints. + node-camelcase: Add Multi-Arch: foreign.
+
+  [ Pirate Praveen ]
+  * New upstream version 6.2.0
+  * Refresh patches
+  * Bump Standards-Version to 4.5.1 (no changes needed)
+
+ -- Pirate Praveen <praveen@debian.org>  Sun, 20 Dec 2020 00:03:31 +0530
+
+node-camelcase (5.3.1-1) unstable; urgency=medium
+
+  * Team upload
+  * Bump debhelper compatibility level to 12
+  * Declare compliance with policy 4.4.1
+  * Add "Rules-Requires-Root: no"
+  * Add debian/gbp.conf
+  * New upstream version 5.3.1
+  * Switch install to pkg-js-tools
+  * Switch upstream test from ava to tape and enable it
+
+ -- Xavier Guimard <yadd@debian.org>  Sun, 24 Nov 2019 22:38:45 +0100
+
+node-camelcase (5.0.0-1) unstable; urgency=medium
+
+  * Team upload
+  * New upstream version 5.0.0
+  * Bump debhelper compatibility level to 11
+  * Bump Standards-Version to 4.3.0 (no changes needed)
+  * Update URL in the Vcs-* field
+  * Fix URL in d/copyright
+  * Add minimal test
+  * Add upstream test in autopkgtest
+
+ -- Utkarsh Gupta <guptautkarsh2102@gmail.com>  Tue, 22 Jan 2019 05:10:35 +0530
+
+node-camelcase (4.1.0-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream release
+
+ -- suman <suman@protonmail.com>  Sat, 11 Nov 2017 06:07:38 +0000
+
+node-camelcase (3.0.0-1) unstable; urgency=low
+
+  [ Jonathan Ulrich Horn ]
+  * Initial release (Closes: #826272)
+
+ -- Sruthi Chandran <srud@disroot.org>  Tue, 18 Oct 2016 19:47:23 +0530
