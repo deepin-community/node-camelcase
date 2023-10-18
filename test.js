@@ -1,8 +1,11 @@
 import test from 'ava';
-import camelCase from '.';
+import camelCase from './index.js';
 
 test('camelCase', t => {
 	t.is(camelCase('foo'), 'foo');
+	/// https://github.com/sindresorhus/camelcase/issues/95
+	/// t.is(camelCase('IDs'), 'ids');
+	/// t.is(camelCase('FooIDs'), 'fooIds');
 	t.is(camelCase('foo-bar'), 'fooBar');
 	t.is(camelCase('foo-bar-baz'), 'fooBarBaz');
 	t.is(camelCase('foo--bar'), 'fooBar');
@@ -12,16 +15,16 @@ test('camelCase', t => {
 	t.is(camelCase('FOÈ-BAR'), 'foèBar');
 	t.is(camelCase('-foo-bar-'), 'fooBar');
 	t.is(camelCase('--foo--bar--'), 'fooBar');
+	t.is(camelCase('foo-1'), 'foo1');
 	t.is(camelCase('foo.bar'), 'fooBar');
 	t.is(camelCase('foo..bar'), 'fooBar');
 	t.is(camelCase('..foo..bar..'), 'fooBar');
 	t.is(camelCase('foo_bar'), 'fooBar');
 	t.is(camelCase('__foo__bar__'), 'fooBar');
-	t.is(camelCase('__foo__bar__'), 'fooBar');
 	t.is(camelCase('foo bar'), 'fooBar');
 	t.is(camelCase('  foo  bar  '), 'fooBar');
-	t.is(camelCase('-'), '-');
-	t.is(camelCase(' - '), '-');
+	t.is(camelCase('-'), '');
+	t.is(camelCase(' - '), '');
 	t.is(camelCase('fooBar'), 'fooBar');
 	t.is(camelCase('fooBar-baz'), 'fooBarBaz');
 	t.is(camelCase('foìBar-baz'), 'foìBarBaz');
@@ -37,6 +40,13 @@ test('camelCase', t => {
 	t.is(camelCase(['', '']), '');
 	t.is(camelCase('--'), '');
 	t.is(camelCase(''), '');
+	t.is(camelCase('_'), '');
+	t.is(camelCase(' '), '');
+	t.is(camelCase('.'), '');
+	t.is(camelCase('..'), '');
+	t.is(camelCase('--'), '');
+	t.is(camelCase('  '), '');
+	t.is(camelCase('__'), '');
 	t.is(camelCase('--__--_--_'), '');
 	t.is(camelCase(['---_', '--', '', '-_- ']), '');
 	t.is(camelCase('foo bar?'), 'fooBar?');
@@ -77,6 +87,7 @@ test('camelCase with pascalCase option', t => {
 	t.is(camelCase('FOÈ-BAR', {pascalCase: true}), 'FoèBar');
 	t.is(camelCase('-foo-bar-', {pascalCase: true}), 'FooBar');
 	t.is(camelCase('--foo--bar--', {pascalCase: true}), 'FooBar');
+	t.is(camelCase('foo-1', {pascalCase: true}), 'Foo1');
 	t.is(camelCase('foo.bar', {pascalCase: true}), 'FooBar');
 	t.is(camelCase('foo..bar', {pascalCase: true}), 'FooBar');
 	t.is(camelCase('..foo..bar..', {pascalCase: true}), 'FooBar');
@@ -85,8 +96,8 @@ test('camelCase with pascalCase option', t => {
 	t.is(camelCase('__foo__bar__', {pascalCase: true}), 'FooBar');
 	t.is(camelCase('foo bar', {pascalCase: true}), 'FooBar');
 	t.is(camelCase('  foo  bar  ', {pascalCase: true}), 'FooBar');
-	t.is(camelCase('-', {pascalCase: true}), '-');
-	t.is(camelCase(' - ', {pascalCase: true}), '-');
+	t.is(camelCase('-', {pascalCase: true}), '');
+	t.is(camelCase(' - ', {pascalCase: true}), '');
 	t.is(camelCase('fooBar', {pascalCase: true}), 'FooBar');
 	t.is(camelCase('fooBar-baz', {pascalCase: true}), 'FooBarBaz');
 	t.is(camelCase('foìBar-baz', {pascalCase: true}), 'FoìBarBaz');
@@ -159,6 +170,9 @@ test('camelCase with preserveConsecutiveUppercase option', t => {
 	t.is(camelCase('РозовыйПушистыйFOOдинорогиf', {preserveConsecutiveUppercase: true}), 'розовыйПушистыйFOOдинорогиf');
 	t.is(camelCase('桑德在这里。', {preserveConsecutiveUppercase: true}), '桑德在这里。');
 	t.is(camelCase('桑德_在这里。', {preserveConsecutiveUppercase: true}), '桑德在这里。');
+	/// https://github.com/sindresorhus/camelcase/issues/95
+	/// t.is(camelCase('IDs', {preserveConsecutiveUppercase: true}), 'ids');
+	t.is(camelCase('FooIDs', {preserveConsecutiveUppercase: true}), 'fooIDs');
 });
 
 test('camelCase with both pascalCase and preserveConsecutiveUppercase option', t => {
@@ -203,8 +217,45 @@ test('camelCase with locale option', t => {
 	t.is(camelCase('ipsum-dolor', {pascalCase: true, locale: ['en-EN', 'en-GB']}), 'IpsumDolor');
 });
 
+test('camelCase with disabled locale', t => {
+	withLocaleCaseFunctionsMocked(() => {
+		t.is(camelCase('lorem-ipsum', {locale: false}), 'loremIpsum');
+		t.is(camelCase('ipsum-dolor', {pascalCase: true, locale: false}), 'IpsumDolor');
+		t.is(camelCase('ipsum-DOLOR', {pascalCase: true, locale: false, preserveConsecutiveUppercase: true}), 'IpsumDOLOR');
+	});
+});
+
 test('invalid input', t => {
 	t.throws(() => {
 		camelCase(1);
-	}, /Expected the input to be/);
+	}, {
+		message: /Expected the input to be/,
+	});
 });
+
+/* eslint-disable no-extend-native */
+const withLocaleCaseFunctionsMocked = fn => {
+	const throwWhenBeingCalled = () => {
+		throw new Error('Should not be called');
+	};
+
+	const toLocaleUpperCase = Object.getOwnPropertyDescriptor(String.prototype, 'toLocaleUpperCase');
+	const toLocaleLowerCase = Object.getOwnPropertyDescriptor(String.prototype, 'toLocaleLowerCase');
+
+	Object.defineProperty(String.prototype, 'toLocaleUpperCase', {
+		...toLocaleUpperCase,
+		value: throwWhenBeingCalled,
+	});
+	Object.defineProperty(String.prototype, 'toLocaleLowerCase', {
+		...toLocaleLowerCase,
+		value: throwWhenBeingCalled,
+	});
+
+	try {
+		fn();
+	} finally {
+		Object.defineProperty(String.prototype, 'toLocaleUpperCase', toLocaleUpperCase);
+		Object.defineProperty(String.prototype, 'toLocaleLowerCase', toLocaleLowerCase);
+	}
+};
+/* eslint-enable no-extend-native */

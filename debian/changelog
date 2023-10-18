@@ -1,3 +1,37 @@
+node-camelcase (7.0.0-3) unstable; urgency=medium
+
+  * Team upload
+  * Allow __proto__ calls to workaround ava issue
+
+ -- Yadd <yadd@debian.org>  Wed, 30 Nov 2022 20:58:25 +0100
+
+node-camelcase (7.0.0-2) unstable; urgency=medium
+
+  * Team upload
+  * Back to unstable
+
+ -- Yadd <yadd@debian.org>  Mon, 27 Jun 2022 09:18:41 +0200
+
+node-camelcase (7.0.0-1) experimental; urgency=medium
+
+  * Team upload
+  * Declare compliance with policy 4.6.1
+  * New upstream version 7.0.0
+  * Drop test patch and use ava for test
+  * Build commonjs files
+
+ -- Yadd <yadd@debian.org>  Sun, 26 Jun 2022 13:02:17 +0200
+
+node-camelcase (6.3.0-1) unstable; urgency=medium
+
+  * Team upload
+  * Update standards version to 4.6.0, no changes needed.
+  * Drop dependency to nodejs
+  * New upstream version 6.3.0
+  * Refresh patch
+
+ -- Yadd <yadd@debian.org>  Sun, 09 Jan 2022 11:15:59 +0100
+
 node-camelcase (6.2.0-2) unstable; urgency=medium
 
   * Team upload
